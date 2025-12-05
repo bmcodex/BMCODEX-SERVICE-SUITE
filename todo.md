@@ -162,3 +162,8 @@
 - [x] Formularz edycji tytułu i opisu prac
 - [x] Zapisywanie zmian w bazie danych
 - [x] Automatyczne odświeżanie listy po edycji
+
+## Bugfix - Brak karty Projektów na stronie głównej
+- [x] Sprawdzić kod strony głównej (Home.tsx)
+- [x] Dodać kartę Projektów do nawigacji na stronie głównej
+- [x] Upewnić się, że wszystkie moduły są widoczne (zmieniono grid na 3 kolumny)
