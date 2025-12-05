@@ -15,6 +15,13 @@
       "when": 1764935599736,
       "tag": "0001_pretty_thunderbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764939697761,
+      "tag": "0002_aromatic_monster_badoon",
+      "breakpoints": true
     }
   ]
 }

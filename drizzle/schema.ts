@@ -165,7 +165,7 @@ export type InsertVehicleMedia = typeof vehicleMedia.$inferInsert;
  */
 export const protocols = mysqlTable("protocols", {
   id: int("id").autoincrement().primaryKey(),
-  projectId: int("projectId").notNull(),
+  projectId: int("projectId"),
   vehicleId: int("vehicleId").notNull(),
   clientId: int("clientId").notNull(),
   protocolType: mysqlEnum("protocolType", ["intake", "release"]).notNull(),

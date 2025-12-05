@@ -1,0 +1,1 @@
+ALTER TABLE `protocols` MODIFY COLUMN `projectId` int;

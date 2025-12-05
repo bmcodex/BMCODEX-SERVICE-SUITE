@@ -57,12 +57,18 @@ export default function Protocols() {
   });
 
   const handleAddProtocol = () => {
-    if (!newProtocol.projectId || !newProtocol.vehicleId || !newProtocol.clientId) {
-      toast.error("Wypełnij wszystkie wymagane pola");
+    if (!newProtocol.vehicleId || !newProtocol.clientId) {
+      toast.error("Pojazd i klient są wymagane");
       return;
     }
 
-    createProtocolMutation.mutate(newProtocol);
+    // projectId is optional now
+    const protocolData = {
+      ...newProtocol,
+      projectId: newProtocol.projectId || undefined,
+    };
+
+    createProtocolMutation.mutate(protocolData as any);
   };
 
   const selectedProject = projects.find((p) => p.id === newProtocol.projectId);
@@ -118,7 +124,7 @@ export default function Protocols() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="project">Projekt *</Label>
+                    <Label htmlFor="project">Projekt (opcjonalnie)</Label>
                     <select
                       id="project"
                       className="w-full h-10 px-3 rounded-md border border-input bg-background"
@@ -126,21 +132,31 @@ export default function Protocols() {
                       onChange={(e) => {
                         const projectId = parseInt(e.target.value);
                         const project = projects.find((p) => p.id === projectId);
-                        setNewProtocol({
-                          ...newProtocol,
-                          projectId,
-                          vehicleId: project?.vehicleId || 0,
-                          clientId: project?.clientId || 0,
-                        });
+                        if (project) {
+                          setNewProtocol({
+                            ...newProtocol,
+                            projectId,
+                            vehicleId: project.vehicleId,
+                            clientId: project.clientId,
+                          });
+                        } else {
+                          setNewProtocol({
+                            ...newProtocol,
+                            projectId: 0,
+                          });
+                        }
                       }}
                     >
-                      <option value={0}>Wybierz projekt</option>
+                      <option value={0}>Bez projektu</option>
                       {projects.map((project) => (
                         <option key={project.id} value={project.id}>
                           {project.title}
                         </option>
                       ))}
                     </select>
+                    <p className="text-xs text-muted-foreground">
+                      Możesz utworzyć protokół bez przypisania do projektu
+                    </p>
                   </div>
 
                   {selectedProject && (

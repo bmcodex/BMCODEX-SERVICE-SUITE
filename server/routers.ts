@@ -333,7 +333,7 @@ export const appRouter = router({
   protocols: router({
     create: protectedProcedure
       .input(z.object({
-        projectId: z.number(),
+        projectId: z.number().optional(),
         vehicleId: z.number(),
         clientId: z.number(),
         protocolType: z.enum(["intake", "release"]),
