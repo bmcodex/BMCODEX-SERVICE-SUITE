@@ -31,13 +31,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { trpc } from "@/lib/trpc";
-import { Plus, Wrench, Calendar, DollarSign, Trash2, AlertTriangle, ArrowLeft } from "lucide-react";
+import { Plus, Wrench, Calendar, DollarSign, Trash2, AlertTriangle, ArrowLeft, Edit } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Projects() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null);
+  const [editingProject, setEditingProject] = useState<any>(null);
   const [newProject, setNewProject] = useState({
     vehicleId: 0,
     clientId: 0,
@@ -84,6 +86,18 @@ export default function Projects() {
     },
   });
 
+  const updateMutation = trpc.projects.update.useMutation({
+    onSuccess: () => {
+      toast.success("Projekt został zaktualizowany");
+      setIsEditDialogOpen(false);
+      setEditingProject(null);
+      refetch();
+    },
+    onError: (error: any) => {
+      toast.error(`Błąd: ${error.message}`);
+    },
+  });
+
   const handleAddProject = () => {
     if (!newProject.title || !newProject.vehicleId || !newProject.clientId) {
       toast.error("Tytuł, pojazd i klient są wymagane");
@@ -101,6 +115,44 @@ export default function Projects() {
     if (projectToDelete) {
       deleteMutation.mutate({ id: projectToDelete });
     }
+  };
+
+  const handleEditClick = (project: any) => {
+    setEditingProject({
+      id: project.id,
+      title: project.title || "",
+      description: project.description || "",
+      status: project.status,
+      startDate: project.startDate ? new Date(project.startDate).toISOString().split('T')[0] : "",
+      completionDate: project.completionDate ? new Date(project.completionDate).toISOString().split('T')[0] : "",
+      estimatedCost: project.estimatedCost || 0,
+      finalCost: project.finalCost || 0,
+      notes: project.notes || "",
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingProject) return;
+
+    const updateData: any = {
+      id: editingProject.id,
+      title: editingProject.title,
+      description: editingProject.description,
+      status: editingProject.status,
+      estimatedCost: editingProject.estimatedCost,
+      finalCost: editingProject.finalCost,
+      notes: editingProject.notes,
+    };
+
+    if (editingProject.startDate) {
+      updateData.startDate = new Date(editingProject.startDate);
+    }
+    if (editingProject.completionDate) {
+      updateData.completionDate = new Date(editingProject.completionDate);
+    }
+
+    updateMutation.mutate(updateData);
   };
 
   const getStatusBadge = (status: string) => {
@@ -194,13 +246,22 @@ export default function Projects() {
                           </p>
                         )}
                       </div>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        onClick={() => handleDeleteClick(project.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => handleEditClick(project)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          onClick={() => handleDeleteClick(project.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -354,6 +415,115 @@ export default function Projects() {
             </Button>
             <Button onClick={handleAddProject} disabled={createMutation.isPending}>
               {createMutation.isPending ? "Tworzenie..." : "Utwórz projekt"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Project Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edytuj projekt</DialogTitle>
+            <DialogDescription>
+              Zaktualizuj dane projektu
+            </DialogDescription>
+          </DialogHeader>
+          {editingProject && (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-title">Tytuł projektu</Label>
+                <Input
+                  id="edit-title"
+                  value={editingProject.title}
+                  onChange={(e) => setEditingProject({ ...editingProject, title: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-description">Opis</Label>
+                <Textarea
+                  id="edit-description"
+                  value={editingProject.description}
+                  onChange={(e) => setEditingProject({ ...editingProject, description: e.target.value })}
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-status">Status</Label>
+                <Select
+                  value={editingProject.status}
+                  onValueChange={(value) => setEditingProject({ ...editingProject, status: value })}
+                >
+                  <SelectTrigger id="edit-status">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="received">Przyjęty</SelectItem>
+                    <SelectItem value="in_progress">W trakcie</SelectItem>
+                    <SelectItem value="waiting_parts">Czeka na części</SelectItem>
+                    <SelectItem value="ready_pickup">Gotowy do odbioru</SelectItem>
+                    <SelectItem value="completed">Zakończony</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-startDate">Data rozpoczęcia</Label>
+                  <Input
+                    id="edit-startDate"
+                    type="date"
+                    value={editingProject.startDate}
+                    onChange={(e) => setEditingProject({ ...editingProject, startDate: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-completionDate">Data zakończenia</Label>
+                  <Input
+                    id="edit-completionDate"
+                    type="date"
+                    value={editingProject.completionDate}
+                    onChange={(e) => setEditingProject({ ...editingProject, completionDate: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-estimatedCost">Szacowany koszt (PLN)</Label>
+                  <Input
+                    id="edit-estimatedCost"
+                    type="number"
+                    value={editingProject.estimatedCost}
+                    onChange={(e) => setEditingProject({ ...editingProject, estimatedCost: parseInt(e.target.value) || 0 })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-finalCost">Koszt końcowy (PLN)</Label>
+                  <Input
+                    id="edit-finalCost"
+                    type="number"
+                    value={editingProject.finalCost}
+                    onChange={(e) => setEditingProject({ ...editingProject, finalCost: parseInt(e.target.value) || 0 })}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-notes">Notatki</Label>
+                <Textarea
+                  id="edit-notes"
+                  value={editingProject.notes}
+                  onChange={(e) => setEditingProject({ ...editingProject, notes: e.target.value })}
+                  rows={3}
+                  placeholder="Dodatkowe informacje o projekcie..."
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              Anuluj
+            </Button>
+            <Button onClick={handleSaveEdit} disabled={updateMutation.isPending}>
+              {updateMutation.isPending ? "Zapisywanie..." : "Zapisz zmiany"}
             </Button>
           </DialogFooter>
         </DialogContent>

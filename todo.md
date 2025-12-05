@@ -144,7 +144,7 @@
 - [x] Utworzyć stronę zarządzania projektami (/projects)
 - [x] Dodać formularz tworzenia nowego projektu
 - [x] Dodać listę wszystkich projektów z filtrowaniem
-- [ ] Możliwość edycji projektu
+- [x] Możliwość edycji projektu
 - [x] Możliwość usunięcia projektu
 - [x] Dodać link do projektów w nawigacji
 
@@ -152,3 +152,13 @@
 - [x] Uprościć tworzenie protokołu - opcjonalny projekt
 - [x] Umożliwić tworzenie protokołu tylko z VIN pojazdu
 - [ ] Automatyczne tworzenie projektu przy tworzeniu protokołu (opcjonalne)
+
+## Nowe funkcjonalności - Edycja projektów
+- [x] Dodać przycisk edycji w karcie projektu
+- [x] Utworzyć dialog edycji projektu
+- [x] Formularz edycji statusu projektu
+- [x] Formularz edycji kosztów (szacowany i końcowy)
+- [x] Formularz edycji dat (rozpoczęcia i zakończenia)
+- [x] Formularz edycji tytułu i opisu prac
+- [x] Zapisywanie zmian w bazie danych
+- [x] Automatyczne odświeżanie listy po edycji
