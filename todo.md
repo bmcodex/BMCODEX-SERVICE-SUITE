@@ -111,24 +111,24 @@
 - [x] Dodać link do panelu klientów w nawigacji
 
 ## Nowe funkcjonalności - Zarządzanie klientami v2
-- [ ] Strona szczegółów klienta (/client/:id)
-- [ ] Wyświetlanie pełnej historii wizyt klienta
-- [ ] Lista wszystkich pojazdów klienta
-- [ ] Możliwość edycji danych klienta
-- [ ] Przegląd wszystkich protokołów klienta
-- [ ] Przegląd wszystkich projektów klienta
-- [ ] Statystyki klienta (liczba wizyt, wydatki)
+- [x] Strona szczegółów klienta (/client/:id)
+- [x] Wyświetlanie pełnej historii wizyt klienta
+- [x] Lista wszystkich pojazdów klienta
+- [x] Możliwość edycji danych klienta
+- [x] Przegląd wszystkich protokołów klienta
+- [x] Przegląd wszystkich projektów klienta
+- [x] Statystyki klienta (liczba wizyt, wydatki)
 
 ## Nowe funkcjonalności - DTC Analyzer v2
-- [ ] Przycisk "+ Nowy pojazd" w formularzu DTC Analyzer
-- [ ] Dialog szybkiego dodawania pojazdu
-- [ ] Automatyczne odświeżanie listy pojazdów po dodaniu
+- [x] Przycisk "+ Nowy pojazd" w formularzu DTC Analyzer
+- [x] Dialog szybkiego dodawania pojazdu
+- [x] Automatyczne odświeżanie listy pojazdów po dodaniu
 
 ## Nowe funkcjonalności - Wyszukiwanie i filtrowanie
-- [ ] Pasek wyszukiwania w panelu klientów
-- [ ] Wyszukiwanie po nazwie klienta
-- [ ] Wyszukiwanie po emailu
-- [ ] Wyszukiwanie po numerze telefonu
+- [x] Pasek wyszukiwania w panelu klientów
+- [x] Wyszukiwanie po nazwie klienta
+- [x] Wyszukiwanie po emailu
+- [x] Wyszukiwanie po numerze telefonu
 - [ ] Filtrowanie w Garage Manager po marce
 - [ ] Filtrowanie w Garage Manager po modelu
 - [ ] Filtrowanie w Garage Manager po roku
