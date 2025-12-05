@@ -5,6 +5,11 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { TRPCError } from "@trpc/server";
+import {
+  send24HourReminder,
+  send2HourReminder,
+  sendServiceCompletionNotification,
+} from "./notifications";
 
 export const appRouter = router({
   system: systemRouter,
@@ -481,6 +486,57 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await db.markNotificationAsRead(input.id);
         return { success: true };
+      }),
+  }),
+
+  // ============ NOTIFICATION PROCEDURES ============
+  emailNotifications: router({
+    send24HourReminder: protectedProcedure
+      .input(
+        z.object({
+          clientName: z.string(),
+          clientEmail: z.string().email(),
+          clientPhone: z.string().optional(),
+          serviceType: z.string(),
+          scheduledDate: z.date(),
+          vehicleInfo: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const success = await send24HourReminder(input);
+        return { success };
+      }),
+
+    send2HourReminder: protectedProcedure
+      .input(
+        z.object({
+          clientName: z.string(),
+          clientEmail: z.string().email(),
+          clientPhone: z.string().optional(),
+          serviceType: z.string(),
+          scheduledDate: z.date(),
+          vehicleInfo: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const success = await send2HourReminder(input);
+        return { success };
+      }),
+
+    sendServiceCompletion: protectedProcedure
+      .input(
+        z.object({
+          clientName: z.string(),
+          clientEmail: z.string().email(),
+          clientPhone: z.string().optional(),
+          serviceType: z.string(),
+          scheduledDate: z.date(),
+          vehicleInfo: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const success = await sendServiceCompletionNotification(input);
+        return { success };
       }),
   }),
 });

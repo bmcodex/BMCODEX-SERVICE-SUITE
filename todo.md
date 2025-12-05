@@ -74,3 +74,22 @@
 ## Testy
 - [ ] Testy jednostkowe dla wszystkich procedur tRPC
 - [ ] Testy integracyjne między modułami
+
+## Nowe funkcjonalności - System powiadomień
+- [ ] Konfiguracja SendGrid dla email
+- [ ] Konfiguracja Twilio dla SMS
+- [ ] Automatyczne powiadomienia email 24h przed wizytą
+- [ ] Automatyczne powiadomienia email 2h przed wizytą
+- [ ] Automatyczne powiadomienia email po zakończeniu prac
+- [ ] Powiadomienia SMS dla pilnych alertów
+- [ ] Panel konfiguracji powiadomień w ustawieniach
+
+## Nowe funkcjonalności - Protocol Pro Enhancement
+- [ ] Upload zdjęć 360° pojazdu (przód, tył, lewo, prawo, wnętrze)
+- [ ] Galeria zdjęć w protokole z podglądem
+- [ ] Interaktywna sylwetka pojazdu (widok z góry)
+- [ ] Klikalne zaznaczanie uszkodzeń na sylwetce
+- [ ] Opis każdego uszkodzenia (rysa, wgniecenie, zarysowanie)
+- [ ] Canvas do podpisu cyfrowego klienta
+- [ ] Zapis podpisu jako obraz PNG
+- [ ] Wyświetlanie podpisu w wygenerowanym PDF
