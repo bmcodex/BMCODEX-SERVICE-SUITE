@@ -12,15 +12,64 @@ import {
 } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
-import { ArrowLeft, Search, AlertTriangle, CheckCircle2, Wrench, DollarSign } from "lucide-react";
+import { ArrowLeft, Search, AlertTriangle, CheckCircle2, Wrench, DollarSign, Plus } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function DtcAnalyzer() {
   const [dtcCode, setDtcCode] = useState("");
   const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [isAddVehicleDialogOpen, setIsAddVehicleDialogOpen] = useState(false);
+  const [newVehicle, setNewVehicle] = useState({
+    clientId: 1, // Default to first client for now
+    vin: "",
+    brand: "BMW",
+    model: "",
+    year: new Date().getFullYear(),
+    mileage: 0,
+    engine: "",
+    transmission: "",
+    licensePlate: "",
+  });
 
-  const { data: vehicles = [] } = trpc.vehicles.list.useQuery();
+  const { data: vehicles = [], refetch: refetchVehicles } = trpc.vehicles.list.useQuery();
+  const createVehicleMutation = trpc.vehicles.create.useMutation({
+    onSuccess: () => {
+      toast.success("Pojazd został dodany");
+      setIsAddVehicleDialogOpen(false);
+      setNewVehicle({
+        clientId: 1,
+        vin: "",
+        brand: "BMW",
+        model: "",
+        year: new Date().getFullYear(),
+        mileage: 0,
+        engine: "",
+        transmission: "",
+        licensePlate: "",
+      });
+      refetchVehicles();
+    },
+    onError: (error: any) => {
+      toast.error(`Błąd: ${error.message}`);
+    },
+  });
+
+  const handleAddVehicle = () => {
+    if (!newVehicle.vin || !newVehicle.model) {
+      toast.error("VIN i model są wymagane");
+      return;
+    }
+    createVehicleMutation.mutate(newVehicle);
+  };
   const analyzeMutation = trpc.dtc.analyze.useMutation({
     onSuccess: (data) => {
       setAnalysisResult(data);
@@ -90,16 +139,26 @@ export default function DtcAnalyzer() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="vehicle">Pojazd</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="vehicle">Pojazd</Label>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsAddVehicleDialogOpen(true)}
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Nowy pojazd
+                  </Button>
+                </div>
                 <Select
-                  value={selectedVehicleId?.toString() || ""}
+                  value={selectedVehicleId?.toString()}
                   onValueChange={(value) => setSelectedVehicleId(parseInt(value))}
                 >
                   <SelectTrigger id="vehicle">
                     <SelectValue placeholder="Wybierz pojazd" />
                   </SelectTrigger>
                   <SelectContent>
-                    {vehicles.map((vehicle) => (
+                    {vehicles.map((vehicle: any) => (
                       <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
                         {vehicle.brand} {vehicle.model} ({vehicle.vin})
                       </SelectItem>
@@ -273,6 +332,104 @@ export default function DtcAnalyzer() {
           </div>
         )}
       </div>
+
+      {/* Add Vehicle Dialog */}
+      <Dialog open={isAddVehicleDialogOpen} onOpenChange={setIsAddVehicleDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Dodaj nowy pojazd</DialogTitle>
+            <DialogDescription>
+              Wprowadź dane pojazdu do bazy
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="vin">VIN *</Label>
+              <Input
+                id="vin"
+                placeholder="WBA3B5C50DF123456"
+                value={newVehicle.vin}
+                onChange={(e) => setNewVehicle({ ...newVehicle, vin: e.target.value })}
+                maxLength={17}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="brand">Marka</Label>
+                <Input
+                  id="brand"
+                  value={newVehicle.brand}
+                  onChange={(e) => setNewVehicle({ ...newVehicle, brand: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="model">Model *</Label>
+                <Input
+                  id="model"
+                  placeholder="330i"
+                  value={newVehicle.model}
+                  onChange={(e) => setNewVehicle({ ...newVehicle, model: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="year">Rok produkcji</Label>
+                <Input
+                  id="year"
+                  type="number"
+                  value={newVehicle.year}
+                  onChange={(e) => setNewVehicle({ ...newVehicle, year: parseInt(e.target.value) })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="mileage">Przebieg (km)</Label>
+                <Input
+                  id="mileage"
+                  type="number"
+                  value={newVehicle.mileage}
+                  onChange={(e) => setNewVehicle({ ...newVehicle, mileage: parseInt(e.target.value) })}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="engine">Silnik</Label>
+              <Input
+                id="engine"
+                placeholder="B48 2.0L Turbo"
+                value={newVehicle.engine}
+                onChange={(e) => setNewVehicle({ ...newVehicle, engine: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="transmission">Skrzynia biegów</Label>
+              <Input
+                id="transmission"
+                placeholder="8-speed automatic"
+                value={newVehicle.transmission}
+                onChange={(e) => setNewVehicle({ ...newVehicle, transmission: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="licensePlate">Numer rejestracyjny</Label>
+              <Input
+                id="licensePlate"
+                placeholder="WA 12345"
+                value={newVehicle.licensePlate}
+                onChange={(e) => setNewVehicle({ ...newVehicle, licensePlate: e.target.value })}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddVehicleDialogOpen(false)}>
+              Anuluj
+            </Button>
+            <Button onClick={handleAddVehicle} disabled={createVehicleMutation.isPending}>
+              {createVehicleMutation.isPending ? "Dodawanie..." : "Dodaj pojazd"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
