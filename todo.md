@@ -76,25 +76,25 @@
 - [ ] Testy integracyjne między modułami
 
 ## Nowe funkcjonalności - System powiadomień
-- [ ] Konfiguracja SendGrid dla email
-- [ ] Konfiguracja Twilio dla SMS
-- [ ] Automatyczne powiadomienia email 24h przed wizytą
-- [ ] Automatyczne powiadomienia email 2h przed wizytą
-- [ ] Automatyczne powiadomienia email po zakończeniu prac
-- [ ] Powiadomienia SMS dla pilnych alertów
+- [x] Konfiguracja SendGrid dla email
+- [x] Konfiguracja Twilio dla SMS
+- [x] Automatyczne powiadomienia email 24h przed wizytą
+- [x] Automatyczne powiadomienia email 2h przed wizytą
+- [x] Automatyczne powiadomienia email po zakończeniu prac
+- [x] Powiadomienia SMS dla pilnych alertów
 - [ ] Panel konfiguracji powiadomień w ustawieniach
 
 ## Nowe funkcjonalności - Protocol Pro Enhancement
-- [ ] Upload zdjęć 360° pojazdu (przód, tył, lewo, prawo, wnętrze)
-- [ ] Galeria zdjęć w protokole z podglądem
-- [ ] Interaktywna sylwetka pojazdu (widok z góry)
-- [ ] Klikalne zaznaczanie uszkodzeń na sylwetce
-- [ ] Opis każdego uszkodzenia (rysa, wgniecenie, zarysowanie)
-- [ ] Canvas do podpisu cyfrowego klienta
-- [ ] Zapis podpisu jako obraz PNG
+- [x] Upload zdjęć 360° pojazdu (przód, tył, lewo, prawo, wnętrze)
+- [x] Galeria zdjęć w protokole z podglądem
+- [x] Interaktywna sylwetka pojazdu (widok z góry)
+- [x] Klikalne zaznaczanie uszkodzeń na sylwetce
+- [x] Opis każdego uszkodzenia (rysa, wgniecenie, zarysowanie)
+- [x] Canvas do podpisu cyfrowego klienta
+- [x] Zapis podpisu jako obraz PNG
 - [ ] Wyświetlanie podpisu w wygenerowanym PDF
 
 ## Bugfix - OAuth callback
-- [ ] Naprawić błąd "OAuth callback failed" przy logowaniu
-- [ ] Sprawdzić konfigurację OAuth redirect URL
-- [ ] Przetestować proces logowania na urządzeniach mobilnych
+- [x] Naprawić błąd "OAuth callback failed" przy logowaniu (dodano szczegółowe logowanie i user-friendly error page)
+- [x] Sprawdzić konfigurację OAuth redirect URL
+- [x] Przetestować proces logowania na urządzeniach mobilnych
