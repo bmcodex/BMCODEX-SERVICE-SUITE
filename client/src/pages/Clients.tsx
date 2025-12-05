@@ -15,12 +15,24 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
-import { Plus, Mail, Phone, MapPin, Edit, Trash2, Search } from "lucide-react";
+import { Plus, Mail, Phone, MapPin, Edit, Trash2, Search, AlertTriangle } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
 export default function Clients() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState<number | null>(null);
   const [newClient, setNewClient] = useState({
     name: "",
     email: "",
@@ -30,11 +42,18 @@ export default function Clients() {
   });
 
   const { data: clients, isLoading, refetch } = trpc.clients.list.useQuery();
+  
   const createMutation = trpc.clients.create.useMutation({
     onSuccess: () => {
       toast.success("Klient został dodany");
       setIsAddDialogOpen(false);
-      setNewClient({ name: "", email: "", phone: "", address: "", notes: "" });
+      setNewClient({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        notes: "",
+      });
       refetch();
     },
     onError: (error: any) => {
@@ -42,15 +61,28 @@ export default function Clients() {
     },
   });
 
-  // const deleteMutation = trpc.clients.delete.useMutation({
-  //   onSuccess: () => {
-  //     toast.success("Klient został usunięty");
-  //     refetch();
-  //   },
-  //   onError: (error: any) => {
-  //     toast.error(`Błąd: ${error.message}`);
-  //   },
-  // });
+  const deleteMutation = trpc.clients.delete.useMutation({
+    onSuccess: () => {
+      toast.success("Klient został usunięty");
+      setDeleteDialogOpen(false);
+      setClientToDelete(null);
+      refetch();
+    },
+    onError: (error: any) => {
+      toast.error(`Błąd: ${error.message}`);
+    },
+  });
+
+  const handleDeleteClick = (clientId: number) => {
+    setClientToDelete(clientId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (clientToDelete) {
+      deleteMutation.mutate({ id: clientToDelete });
+    }
+  };
 
   const handleAddClient = () => {
     if (!newClient.name) {
@@ -271,9 +303,16 @@ export default function Clients() {
                       <p className="text-sm text-muted-foreground line-clamp-2">{client.notes}</p>
                     </div>
                   )}
-                  <div className="pt-4">
-                    <Button variant="outline" className="w-full" asChild>
+                  <div className="pt-4 flex gap-2">
+                    <Button variant="outline" className="flex-1" asChild>
                       <Link href={`/client/${client.id}`}>Zobacz szczegóły</Link>
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="icon"
+                      onClick={() => handleDeleteClick(client.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardContent>
@@ -283,6 +322,31 @@ export default function Clients() {
             );
         })()}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Potwierdź usunięcie
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Czy na pewno chcesz usunąć tego klienta? Ta operacja jest nieodwracalna.
+              Wszystkie powiązane dane (pojazdy, projekty, protokoły) również zostaną usunięte.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Anuluj</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              Usuń klienta
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

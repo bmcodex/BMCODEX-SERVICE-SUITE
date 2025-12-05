@@ -65,6 +65,13 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteClient(input.id);
+        return { success: true };
+      }),
+
     search: protectedProcedure
       .input(z.object({ query: z.string() }))
       .query(async ({ input }) => {

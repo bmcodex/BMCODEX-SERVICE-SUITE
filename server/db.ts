@@ -133,6 +133,14 @@ export async function updateClient(id: number, data: Partial<InsertClient>) {
   await db.update(clients).set(data).where(eq(clients.id, id));
 }
 
+export async function deleteClient(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Delete client (cascade will handle related records if configured)
+  await db.delete(clients).where(eq(clients.id, id));
+}
+
 export async function searchClients(query: string) {
   const db = await getDb();
   if (!db) return [];

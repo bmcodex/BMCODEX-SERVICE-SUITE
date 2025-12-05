@@ -133,3 +133,22 @@
 - [ ] Filtrowanie w Garage Manager po modelu
 - [ ] Filtrowanie w Garage Manager po roku
 - [ ] Filtrowanie w Garage Manager po statusie projektu
+
+## Bugfix - Brak możliwości usuwania klientów
+- [ ] Dodać przycisk usuwania klienta w panelu klientów
+- [ ] Dodać dialog potwierdzenia usunięcia
+- [ ] Zaimplementować procedurę tRPC do usuwania klientów
+- [ ] Obsłużyć kaskadowe usuwanie powiązanych danych
+
+## Bugfix - Brak możliwości tworzenia projektów
+- [ ] Utworzyć stronę zarządzania projektami (/projects)
+- [ ] Dodać formularz tworzenia nowego projektu
+- [ ] Dodać listę wszystkich projektów z filtrowaniem
+- [ ] Możliwość edycji projektu
+- [ ] Możliwość usunięcia projektu
+- [ ] Dodać link do projektów w nawigacji
+
+## Bugfix - Protokoły wymagają projektu
+- [ ] Uprościć tworzenie protokołu - opcjonalny projekt
+- [ ] Umożliwić tworzenie protokołu tylko z VIN pojazdu
+- [ ] Automatyczne tworzenie projektu przy tworzeniu protokołu (opcjonalne)
