@@ -12,6 +12,7 @@ import BookingCalendar from "./pages/BookingCalendar";
 import Protocols from "./pages/Protocols";
 import ProtocolDetails from "./pages/ProtocolDetails";
 import Dashboard from "./pages/Dashboard";
+import Clients from "./pages/Clients";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
       <Route path={"/booking"} component={BookingCalendar} />
        <Route path="/protocols" component={Protocols} />
       <Route path="/protocol/:id" component={ProtocolDetails} />
+      <Route path="/clients" component={Clients} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

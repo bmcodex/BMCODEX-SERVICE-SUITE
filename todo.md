@@ -98,3 +98,14 @@
 - [x] Naprawić błąd "OAuth callback failed" przy logowaniu (dodano szczegółowe logowanie i user-friendly error page)
 - [x] Sprawdzić konfigurację OAuth redirect URL
 - [x] Przetestować proces logowania na urządzeniach mobilnych
+
+## Bugfix - DTC Analyzer
+- [ ] Naprawić pusty wybór pojazdu w DTC Analyzer
+- [ ] Dodać przykładowe pojazdy testowe do bazy danych
+- [ ] Dodać przycisk "Dodaj pojazd" w DTC Analyzer dla szybkiego dodawania
+
+## Bugfix - Brak panelu klientów
+- [ ] Utworzyć stronę zarządzania klientami (/clients)
+- [ ] Dodać formularz tworzenia nowego klienta
+- [ ] Dodać listę wszystkich klientów z możliwością edycji
+- [ ] Dodać link do panelu klientów w nawigacji

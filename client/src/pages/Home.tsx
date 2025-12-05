@@ -10,7 +10,8 @@ import {
   Search, 
   Wrench,
   ArrowRight,
-  LogOut
+  LogOut,
+  Users
 } from "lucide-react";
 
 export default function Home() {
@@ -157,6 +158,25 @@ export default function Home() {
                   <CardTitle className="text-xl">Protocol Pro</CardTitle>
                   <CardDescription>
                     Protokoły przyjęcia/wydania z generowaniem PDF
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center text-primary text-sm font-medium">
+                    Otwórz moduł <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/clients">
+              <Card className="bmw-card hover:border-primary/50 transition-all cursor-pointer group">
+                <CardHeader>
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <Users className="w-6 h-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Zarządzanie Klientami</CardTitle>
+                  <CardDescription>
+                    Baza klientów i dane kontaktowe
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
