@@ -199,6 +199,13 @@ export const appRouter = router({
         await db.updateProject(id, data);
         return { success: true };
       }),
+
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteProject(input.id);
+        return { success: true };
+      }),
   }),
 
   // ============ DTC ANALYZER PROCEDURES ============

@@ -14,6 +14,7 @@ import ProtocolDetails from "./pages/ProtocolDetails";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import ClientDetails from "./pages/ClientDetails";
+import Projects from "./pages/Projects";
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/protocol/:id" component={ProtocolDetails} />
       <Route path="/clients" component={Clients} />
       <Route path="/client/:id" component={ClientDetails} />
+      <Route path="/projects" component={Projects} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

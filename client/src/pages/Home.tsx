@@ -174,9 +174,28 @@ export default function Home() {
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <Users className="w-6 h-6 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">Zarządzanie Klientami</CardTitle>
+                  <CardTitle>Klienci</CardTitle>
                   <CardDescription>
                     Baza klientów i dane kontaktowe
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center text-primary text-sm font-medium">
+                    Otwórz moduł <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/projects">
+              <Card className="bmw-card hover:border-primary/50 transition-all cursor-pointer group">
+                <CardHeader>
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <Wrench className="w-6 h-6 text-primary" />
+                  </div>
+                  <CardTitle>Projekty</CardTitle>
+                  <CardDescription>
+                    Zarządzanie projektami serwisowymi
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
