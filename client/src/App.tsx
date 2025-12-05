@@ -13,6 +13,7 @@ import Protocols from "./pages/Protocols";
 import ProtocolDetails from "./pages/ProtocolDetails";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
+import ClientDetails from "./pages/ClientDetails";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
        <Route path="/protocols" component={Protocols} />
       <Route path="/protocol/:id" component={ProtocolDetails} />
       <Route path="/clients" component={Clients} />
+      <Route path="/client/:id" component={ClientDetails} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
