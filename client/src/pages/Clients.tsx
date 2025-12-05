@@ -15,11 +15,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
-import { Plus, Mail, Phone, MapPin, Edit, Trash2 } from "lucide-react";
+import { Plus, Mail, Phone, MapPin, Edit, Trash2, Search } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Clients() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [newClient, setNewClient] = useState({
     name: "",
     email: "",
@@ -162,9 +163,33 @@ export default function Clients() {
         </div>
       </header>
 
+      {/* Search Bar */}
+      <div className="container py-6">
+        <div className="relative max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="Szukaj po nazwie, emailu lub telefonie..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+      </div>
+
       {/* Clients List */}
-      <div className="container py-8">
-        {!clients || clients.length === 0 ? (
+      <div className="container py-2">
+        {(() => {
+          const filteredClients = clients?.filter((client: any) => {
+            const query = searchQuery.toLowerCase();
+            return (
+              client.name.toLowerCase().includes(query) ||
+              client.email?.toLowerCase().includes(query) ||
+              client.phone?.toLowerCase().includes(query)
+            );
+          }) || [];
+
+          if (!clients || clients.length === 0) {
+            return (
           <Card className="bmw-card">
             <CardContent className="py-12 text-center">
               <p className="text-muted-foreground mb-4">Brak klientów w bazie danych</p>
@@ -172,11 +197,29 @@ export default function Clients() {
                 <Plus className="w-4 h-4 mr-2" />
                 Dodaj pierwszego klienta
               </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {clients.map((client) => (
+              </CardContent>
+            </Card>
+            );
+          }
+
+          if (filteredClients.length === 0) {
+            return (
+              <Card className="bmw-card">
+                <CardContent className="py-12 text-center">
+                  <p className="text-muted-foreground mb-4">
+                    Nie znaleziono klientów pasujących do zapytania: "{searchQuery}"
+                  </p>
+                  <Button variant="outline" onClick={() => setSearchQuery("")}>
+                    Wyczyść wyszukiwanie
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          }
+
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredClients.map((client: any) => (
               <Card key={client.id} className="bmw-card hover:border-primary/50 transition-colors">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -235,9 +278,10 @@ export default function Clients() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        )}
+                ))}
+              </div>
+            );
+        })()}
       </div>
     </div>
   );
