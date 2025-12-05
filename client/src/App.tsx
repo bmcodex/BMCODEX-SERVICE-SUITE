@@ -10,6 +10,7 @@ import GarageManager from "./pages/GarageManager";
 import VehicleDetails from "./pages/VehicleDetails";
 import BookingCalendar from "./pages/BookingCalendar";
 import Protocols from "./pages/Protocols";
+import ProtocolDetails from "./pages/ProtocolDetails";
 import Dashboard from "./pages/Dashboard";
 
 function Router() {
@@ -21,7 +22,8 @@ function Router() {
       <Route path={"/garage"} component={GarageManager} />
       <Route path={"/vehicle/:id"} component={VehicleDetails} />
       <Route path={"/booking"} component={BookingCalendar} />
-      <Route path={"/protocols"} component={Protocols} />
+       <Route path="/protocols" component={Protocols} />
+      <Route path="/protocol/:id" component={ProtocolDetails} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

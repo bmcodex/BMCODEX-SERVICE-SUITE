@@ -93,3 +93,8 @@
 - [ ] Canvas do podpisu cyfrowego klienta
 - [ ] Zapis podpisu jako obraz PNG
 - [ ] Wyświetlanie podpisu w wygenerowanym PDF
+
+## Bugfix - OAuth callback
+- [ ] Naprawić błąd "OAuth callback failed" przy logowaniu
+- [ ] Sprawdzić konfigurację OAuth redirect URL
+- [ ] Przetestować proces logowania na urządzeniach mobilnych
