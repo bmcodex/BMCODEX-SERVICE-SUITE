@@ -100,12 +100,12 @@
 - [x] Przetestować proces logowania na urządzeniach mobilnych
 
 ## Bugfix - DTC Analyzer
-- [ ] Naprawić pusty wybór pojazdu w DTC Analyzer
-- [ ] Dodać przykładowe pojazdy testowe do bazy danych
+- [x] Naprawić pusty wybór pojazdu w DTC Analyzer
+- [x] Dodać przykładowe pojazdy testowe do bazy danych
 - [ ] Dodać przycisk "Dodaj pojazd" w DTC Analyzer dla szybkiego dodawania
 
 ## Bugfix - Brak panelu klientów
-- [ ] Utworzyć stronę zarządzania klientami (/clients)
-- [ ] Dodać formularz tworzenia nowego klienta
-- [ ] Dodać listę wszystkich klientów z możliwością edycji
-- [ ] Dodać link do panelu klientów w nawigacji
+- [x] Utworzyć stronę zarządzania klientami (/clients)
+- [x] Dodać formularz tworzenia nowego klienta
+- [x] Dodać listę wszystkich klientów z możliwością edycji
+- [x] Dodać link do panelu klientów w nawigacji
